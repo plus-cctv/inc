@@ -1,15 +1,15 @@
 <?php
 /**
- * Bootswatch CSS.
+ * plus CSS.
  *
- * @package Bootswatch
+ * @package plus
  */
 
 /**
  * Add body class `fixed-navbar` if navbar is fixed.
  */
 add_action( 'body_class', function( $body_classes ) {
-	if ( bootswatch_has( 'fixed_navbar' ) ) {
+	if ( plus_has( 'fixed_navbar' ) ) {
 		return array_merge( $body_classes, [ 'fixed-navbar' ] );
 	}
 	return $body_classes;
@@ -19,7 +19,7 @@ add_action( 'body_class', function( $body_classes ) {
  * Add inline CSS in header.
  */
 add_action( 'wp_head', function() {
-	echo '<style>' . bootswatch_generate_inline_css( bootswatch_get_option( 'theme', 'bootstrap' ) ) . '</style>'; // WPCS: xss ok.
+	echo '<style>' . plus_generate_inline_css( plus_get_option( 'theme', 'bootstrap' ) ) . '</style>'; // WPCS: xss ok.
 } );
 
 /**
@@ -27,19 +27,19 @@ add_action( 'wp_head', function() {
  *
  * If `$theme` is empty, the function will use bootstrap.
  *
- * @param  String $theme The bootswatch theme.
+ * @param  String $theme The plus theme.
  * @return String        The CSS code.
  */
-function bootswatch_generate_inline_css( $theme = 'bootstrap' ) {
+function plus_generate_inline_css( $theme = 'bootstrap' ) {
 
 	if ( ! class_exists( 'Less_Parser' ) ) {
-		return bootswatch_bootstrap_inline_css();
+		return plus_bootstrap_inline_css();
 	}
 
 	/**
 	 * Prepare replaceemts.
 	 */
-	$options = get_theme_mod( 'bootswatch' );
+	$options = get_theme_mod( 'plus' );
 	$replacements = [
 		'{{custom_header_percentage_size}}' => '100vh',
 	];
@@ -55,10 +55,10 @@ function bootswatch_generate_inline_css( $theme = 'bootstrap' ) {
 	 */
 	switch ( $theme ) {
 	case 'bootstrap':
-			$variables_path = bootswatch_get_bootstrap_part_path( 'variables' );
+			$variables_path = plus_get_bootstrap_part_path( 'variables' );
 		break;
 	default:
-			$variables_path = bootswatch_get_theme_part_path( $theme, 'variables' );
+			$variables_path = plus_get_theme_part_path( $theme, 'variables' );
 		break;
 	}
 
@@ -152,11 +152,11 @@ function bootswatch_generate_inline_css( $theme = 'bootstrap' ) {
 /**
  * Return Bootstrap inline CSS code.
  *
- * This CSS code can be obtained by running `var_dump(bootswatch_generate_inline_css()`.
+ * This CSS code can be obtained by running `var_dump(plus_generate_inline_css()`.
  *
  * @return String CSS code.
  */
-function bootswatch_bootstrap_inline_css() {
+function plus_bootstrap_inline_css() {
 	$css = '
 		body.fixed-navbar #wpadminbar {
 			position: fixed;
