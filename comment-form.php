@@ -2,7 +2,7 @@
 /**
  * Comment form enhancements.
  *
- * @package Bootswatch
+ * @package plus
  */
 
 /**
@@ -11,7 +11,7 @@
  * @param  Array $fields Fields.
  * @return Array         Fields altered.
  */
-function bootswatch_comment_form_fields( $fields ) {
+function plus_comment_form_fields( $fields ) {
 
 	$commenter     = wp_get_current_commenter();
 	$req           = get_option( 'require_name_email' );
@@ -24,7 +24,7 @@ function bootswatch_comment_form_fields( $fields ) {
 
 	$fields_parameters = array(
 		'author' => array(
-			'label'         => __( 'Name', 'bootswatch' ),
+			'label'         => __( 'Name', 'plus' ),
 			'type'          => 'text',
 			'value'         => esc_attr( $commenter['comment_author'] ),
 			'required'      => $required,
@@ -33,7 +33,7 @@ function bootswatch_comment_form_fields( $fields ) {
 			'maxlength'     => 245,
 		),
 		'email' => array(
-			'label'         => __( 'Email', 'bootswatch' ),
+			'label'         => __( 'Email', 'plus' ),
 			'type'          => 'email',
 			'value'         => esc_attr( $commenter['comment_author_email'] ),
 			'required'      => $required,
@@ -43,7 +43,7 @@ function bootswatch_comment_form_fields( $fields ) {
 			'describedby'   => 'email-notes',
 		),
 		'url' => array(
-			'label'     => __( 'Website', 'bootswatch' ),
+			'label'     => __( 'Website', 'plus' ),
 			'type'      => 'url',
 			'value'     => esc_attr( $commenter['comment_author_url'] ),
 			'size'      => 30,
@@ -83,7 +83,7 @@ function bootswatch_comment_form_fields( $fields ) {
 	}
 	return $fields;
 }
-add_filter( 'comment_form_default_fields', 'bootswatch_comment_form_fields' );
+add_filter( 'comment_form_default_fields', 'plus_comment_form_fields' );
 
 /**
  * Callback function for the `comment_form_defaults` filter hook
@@ -91,11 +91,11 @@ add_filter( 'comment_form_default_fields', 'bootswatch_comment_form_fields' );
  * @param  Array $defaults Defaults.
  * @return Array           Defaults modified
  */
-function bootswatch_comment_form( $defaults ) {
+function plus_comment_form( $defaults ) {
 	$defaults['class_form']    = 'form-horizontal well';
 	$defaults['comment_field'] = '
 		<div class="form-group comment-form-comment">
-			<label for="comment" class="col-sm-2 control-label">' . _x( 'Comment', 'noun', 'bootswatch' ) . ' <span class="required">*</span></label>
+			<label for="comment" class="col-sm-2 control-label">' . _x( 'Comment', 'noun', 'plus' ) . ' <span class="required">*</span></label>
 			<div class="col-sm-10">
 				<textarea class="form-control" id="comment" name="comment" cols="45" rows="8" required="required" aria-required="true"></textarea>
 			</div>
@@ -105,4 +105,4 @@ function bootswatch_comment_form( $defaults ) {
 	$defaults['class_submit']  = 'btn btn-primary btn-lg';
 	return $defaults;
 };
-add_filter( 'comment_form_defaults', 'bootswatch_comment_form' );
+add_filter( 'comment_form_defaults', 'plus_comment_form' );
