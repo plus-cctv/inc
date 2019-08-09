@@ -2,7 +2,7 @@
 /**
  * Calendar classes.
  *
- * @package Bootswatch
+ * @package Plus
  */
 
 add_action( 'get_calendar', function( $output ) {
