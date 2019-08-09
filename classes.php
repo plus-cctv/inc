@@ -1,8 +1,8 @@
 <?php
 /**
- * Bootswatch classes.
+ * plus classes.
  *
- * @package Bootswatch
+ * @package Plus
  */
 
 /**
@@ -10,13 +10,13 @@
  *
  * @return Array The classes.
  */
-function bootswatch_primary_classes() {
+function plus_primary_classes() {
 	$classes = is_active_sidebar( 'sidebar' )
 		? 'col-md-8'
 		: 'col-md-12'
 	;
 
-	$classes = apply_filters( 'bootswatch_primary_classes', $classes );
+	$classes = apply_filters( 'plus_primary_classes', $classes );
 	return $classes;
 }
 
