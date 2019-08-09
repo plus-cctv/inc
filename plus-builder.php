@@ -2,11 +2,11 @@
 /**
  * Bootswatch theme builder.
  *
- * @package Bootswatch
+ * @package plus
  */
 
 /**
- * Build a bootswatch theme (results are cached).
+ * Build a plus theme (results are cached).
  *
  * @param  String  $theme      Theme name, e.g. `cerulean`.
  * @param  Array   $overrides  Associative array of variable names and values.
@@ -20,18 +20,18 @@ function bootswatch_make_theme_file( $theme, $overrides = [], $rebuild = false )
 	 */
 	if ( ! class_exists( 'Less_Parser' ) ) {
 		switch ( $theme ) {
-		case 'bootstrap':
-			return get_template_directory() . '/vendor/kadimi/bootswatch-light/light/css/bootstrap.min.css';
+		case 'plus':
+			return get_template_directory() . '/vendor/plus/plus-light/light/css/plus.min.css';
 			break;
-		case 'bootstrap-theme':
-			return get_template_directory() . '/vendor/kadimi/bootswatch-light/light/css/bootstrap-theme.min.css';
+		case 'plus-theme':
+			return get_template_directory() . '/vendor/plus/plus-light/light/css/plus-theme.min.css';
 			break;
 		default:
-			return get_template_directory() . '/vendor/kadimi/bootswatch-light/light/' . $theme . '/bootstrap.min.css';
+			return get_template_directory() . '/vendor/plus/plus-light/light/' . $theme . '/plus.min.css';
 			break;
 		}
 	}
-	$rebuild = $rebuild || ( defined( 'BOOTSWATCH_FORCE_REBUILD' ) && BOOTSWATCH_FORCE_REBUILD );
+	$rebuild = $rebuild || ( defined( 'PLUS_FORCE_REBUILD' ) && PLUS_FORCE_REBUILD );
 
 	$cache_file_basename = sprintf( '%1$s%2$s-%3$s.min.css'
 		, $theme
@@ -42,14 +42,14 @@ function bootswatch_make_theme_file( $theme, $overrides = [], $rebuild = false )
 	/**
 	 * Return cached CSS if abs(number) rebuild is not requested, we are not debugging and cache exists.
 	 */
-	if ( ! $rebuild && bootswatch_cache_file_exists( $cache_file_basename ) ) {
+	if ( ! $rebuild && plus_cache_file_exists( $cache_file_basename ) ) {
 		return get_template_directory() . '/cache/' . $cache_file_basename;
 	}
 
 	/**
 	 * Prepare CSS
 	 */
-	$css = bootswatch_get_bootswatch_theme_css( $theme, $overrides );
+	$css = plus_get_plus_theme_css( $theme, $overrides );
 
 	/**
 	 * RTL-ize when needed.
@@ -61,12 +61,12 @@ function bootswatch_make_theme_file( $theme, $overrides = [], $rebuild = false )
 	/**
 	 * Keep cache light (only ~50 files).
 	 */
-	bootswatch_reduce_cache( 128 );
+	plus_reduce_cache( 128 );
 
 	/**
 	 * Save file
 	 */
-	bootswatch_cache_file( $cache_file_basename, $css );
+	plus_cache_file( $cache_file_basename, $css );
 
 	/**
 	 * Done, return path.
@@ -80,7 +80,7 @@ function bootswatch_make_theme_file( $theme, $overrides = [], $rebuild = false )
  * @param  String $path Path to file.
  * @return String       CSS code.
  */
-function bootswatch_parse_less_file( $path ) {
+function plus_parse_less_file( $path ) {
 	return ( new Less_Parser( [
 		'compress' => true,
 	] ) )->parseFile( $path )->getCss();
@@ -92,7 +92,7 @@ function bootswatch_parse_less_file( $path ) {
  * @param  String $less Less code.
  * @return String       CSS code.
  */
-function bootswatch_parse_less( $less ) {
+function plus_parse_less( $less ) {
 	return ( new Less_Parser( [
 		'compress' => true,
 	] ) )->parse( $less )->getCss();
@@ -101,11 +101,11 @@ function bootswatch_parse_less( $less ) {
 /**
  * Build a themes file, cache it and return the path.
  *
- * @param  String $theme     The theme name, `bootstrap` or a bootswatch theme name, e.g. `lumen`.
+ * @param  String $theme     The theme name, `plus` or a Plus theme name, e.g. `lumen`.
  * @param  Array  $overrides Overrides.
  * @return String            Path to file.
  */
-function bootswatch_get_bootswatch_theme_css( $theme = 'bootstrap', $overrides = [] ) {
+function plus_get_plus_theme_css( $theme = 'plus', $overrides = [] ) {
 
 	/**
 	 * Prevent muliple using the same file.
@@ -115,28 +115,28 @@ function bootswatch_get_bootswatch_theme_css( $theme = 'bootstrap', $overrides =
 	/**
 	 * Path of original files, bare, theme and variables.
 	 */
-	if ( 'bootstrap' === $theme ) {
-		$variables_path = bootswatch_light_directory() . 'less/variables.less';
-		$bare_path      = bootswatch_light_directory() . 'less/bootstrap.less';
-		$theme_path     = bootswatch_light_directory() . 'less/theme.less';
+	if ( 'plus' === $theme ) {
+		$variables_path = plus_light_directory() . 'less/variables.less';
+		$bare_path      = plus_light_directory() . 'less/plus.less';
+		$theme_path     = plus_light_directory() . 'less/theme.less';
 	} else {
-		$variables_path = bootswatch_light_directory() . "$theme/variables.less";
-		$bare_path      = bootswatch_light_directory() . 'less/bootstrap.less';
-		$theme_path     = bootswatch_light_directory() . "$theme/bootswatch.less";
+		$variables_path = plus_light_directory() . "$theme/variables.less";
+		$bare_path      = plus_light_directory() . 'less/plus.less';
+		$theme_path     = plus_light_directory() . "$theme/plus.less";
 	}
 
 	/**
 	 * Path of temporary files, bare, theme, variables and final.
 	 */
-	$tmp_variables_path = bootswatch_light_directory() . "less/_tmp-variables-$salt.less";
-	$tmp_bare_path      = bootswatch_light_directory() . "less/_tmp-bare-$salt.less";
-	$tmp_theme_path     = bootswatch_light_directory() . "less/_tmp-theme-$salt.less";
-	$tmp_final_path     = bootswatch_light_directory() . "less/_tmp-final-$salt.less";
+	$tmp_variables_path = plus_light_directory() . "less/_tmp-variables-$salt.less";
+	$tmp_bare_path      = plus_light_directory() . "less/_tmp-bare-$salt.less";
+	$tmp_theme_path     = plus_light_directory() . "less/_tmp-theme-$salt.less";
+	$tmp_final_path     = plus_light_directory() . "less/_tmp-final-$salt.less";
 
 	/**
 	 * Get a file system isntance.
 	 */
-	$filesystem = bootswatch_get_filesystem();
+	$filesystem = plus_get_filesystem();
 
 	/**
 	 * Create modified variables.less as tmp-variables.less
@@ -174,7 +174,7 @@ function bootswatch_get_bootswatch_theme_css( $theme = 'bootstrap', $overrides =
 	/**
 	 * Parse final file.
 	 */
-	$css = bootswatch_parse_less_file( $tmp_final_path );
+	$css = plus_parse_less_file( $tmp_final_path );
 
 	/**
 	 * Delete temporary files.
@@ -193,7 +193,7 @@ function bootswatch_get_bootswatch_theme_css( $theme = 'bootstrap', $overrides =
  *
  * @return WP_Filesystem_Direct	The instance.
  */
-function bootswatch_get_filesystem() {
+function plus_get_filesystem() {
 
 	static $filesystem = false;
 
@@ -209,7 +209,7 @@ function bootswatch_get_filesystem() {
 	if ( ! defined( 'FS_CHMOD_FILE' ) ) {
 		define( 'FS_CHMOD_FILE', false );
 	}
-	$filesystem = new WP_Filesystem_Direct( 'bootswatch' );
+	$filesystem = new WP_Filesystem_Direct( 'plus' );
 
 	return $filesystem;
 }
@@ -220,9 +220,9 @@ function bootswatch_get_filesystem() {
  * @param  Int $keep Number of files to keep.
  * @return Boolean   True.
  */
-function bootswatch_reduce_cache( $keep ) {
+function plus_reduce_cache( $keep ) {
 
-	$filesystem = bootswatch_get_filesystem();
+	$filesystem = plus_get_filesystem();
 	$cache_dir  = get_template_directory() . '/cache/';
 	$files      = $filesystem->dirlist( $cache_dir );
 
@@ -252,8 +252,8 @@ function bootswatch_reduce_cache( $keep ) {
  * @param  String $basename Basename.
  * @param  String $contents Content.
  */
-function bootswatch_cache_file( $basename, $contents ) {
-	$filesystem = bootswatch_get_filesystem();
+function plus_cache_file( $basename, $contents ) {
+	$filesystem = plus_get_filesystem();
 	$cache_dir  = get_template_directory() . '/cache/';
 
 	/**
@@ -274,16 +274,16 @@ function bootswatch_cache_file( $basename, $contents ) {
  * @param  String $basename Basename.
  * @return Boolean          True if the file exists, false otherwise.
  */
-function bootswatch_cache_file_exists( $basename ) {
+function plus_cache_file_exists( $basename ) {
 	$cache_dir  = get_template_directory() . '/cache/';
 	return file_exists( $cache_dir . $basename );
 }
 
 /**
- * Get bootswatch-light assets directory.
+ * Get plus-light assets directory.
  *
  * @return String The directory path.
  */
-function bootswatch_light_directory() {
-	return get_template_directory() . '/vendor/kadimi/bootswatch-light/light/';
+function plus_light_directory() {
+	return get_template_directory() . '/vendor/plus/plus-light/light/';
 }
