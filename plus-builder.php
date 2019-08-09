@@ -1,6 +1,6 @@
 <?php
 /**
- * Bootswatch theme builder.
+ * Plus theme builder.
  *
  * @package plus
  */
