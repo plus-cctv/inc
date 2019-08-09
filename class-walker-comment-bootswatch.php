@@ -2,18 +2,18 @@
 /**
  * Custom comments walker.
  *
- * @package Bootswatch
+ * @package plus
  */
 
 /**
- * Walker_Comment_Bootswatch
+ * Walker_Comment_plus
  *
  * Custom comments walker.
  */
-class Walker_Comment_Bootswatch extends Walker_Comment {
+class Walker_Comment_Plus extends Walker_Comment {
 
 	/**
-	 * Same as Walker_Comment::html5_comment() plus some Bootstrap classes and style locked on `div`.
+	 * Same as Walker_Comment::html5_comment() plus some plus classes and style locked on `div`.
 	 *
 	 * @param WP_Comment $comment Comment to display.
 	 * @param int        $depth   Depth of the current comment.
